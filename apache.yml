@@ -1,0 +1,25 @@
+---
+- name: Playbook to setup httpd on localhost
+  hosts: localhost
+  become: true
+  gather_facts: false
+
+  vars:
+   pkg: "httpd"
+
+  tasks:
+  
+  - name: Install httpd
+    yum: name=httpd state=present
+
+  - name: Copy index.html
+    copy:
+      src: index.html
+      dest: /var/www/html/index.html
+      mode: 0644
+      owner: root
+      group: root
+
+  - name: start httpd service
+    service: name={{ pkg }} state=started
+
